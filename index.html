@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#54a0ff">
+    <meta name="description" content="帮助孩子养成良好习惯的智能工具">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="育儿助手">
+    <link rel="apple-touch-icon" href="icon-192x192.png">
+    <link rel="manifest" href="manifest.json">
+    <title>育儿小助手 - 快乐成长</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- 顶部导航 -->
+        <header class="app-header">
+            <h1 class="app-title">🧸 育儿小助手</h1>
+            <div class="crystal-counter">
+                <span class="crystal-icon">💎</span>
+                <span id="crystal-count">0</span>
+            </div>
+        </header>
+
+        <!-- 主导航 -->
+        <nav class="main-nav">
+            <button class="nav-btn active" data-section="tasks">任务管理</button>
+            <button class="nav-btn" data-section="achievements">成就系统</button>
+            <button class="nav-btn" data-section="rewards">奖品兑换</button>
+            <button class="nav-btn" data-section="settlement">每日结算</button>
+            <button class="nav-btn" data-section="ai-assistant">AI助手</button>
+            <button class="nav-btn" data-section="settings">设置</button>
+        </nav>
+
+        <!-- 主内容区 -->
+        <main class="app-content">
+            <!-- 任务管理部分 -->
+            <section id="tasks" class="section active">
+                <div class="section-header">
+                    <h2>📋 任务管理</h2>
+                    <button id="add-task-btn" class="btn-primary">添加任务</button>
+                </div>
+
+                <!-- 任务分类标签 -->
+                <div class="task-tabs">
+                    <button class="tab-btn active" data-tab="daily">每日任务</button>
+                    <button class="tab-btn" data-tab="long-term">长期任务</button>
+                </div>
+
+                <!-- 每日任务列表 -->
+                <div id="daily-tasks" class="task-list active">
+                    <div class="empty-state">
+                        <p>还没有每日任务，点击添加按钮创建吧！</p>
+                    </div>
+                </div>
+
+                <!-- 长期任务列表 -->
+                <div id="long-term-tasks" class="task-list">
+                    <div class="empty-state">
+                        <p>还没有长期任务，点击添加按钮创建吧！</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 成就系统部分 -->
+            <section id="achievements" class="section">
+                <div class="section-header">
+                    <h2>🏆 成就系统</h2>
+                    <button id="add-achievement-btn" class="btn-primary">添加成就</button>
+                </div>
+                <div id="achievement-list" class="achievement-list">
+                    <div class="empty-state">
+                        <p>还没有成就，点击添加按钮创建吧！</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 奖品兑换部分 -->
+            <section id="rewards" class="section">
+                <div class="section-header">
+                    <h2>🎁 奖品兑换</h2>
+                    <button id="add-reward-btn" class="btn-primary">添加奖品</button>
+                </div>
+                <div id="reward-list" class="reward-list">
+                    <div class="empty-state">
+                        <p>还没有奖品，点击添加按钮创建吧！</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 每日结算部分 -->
+            <section id="settlement" class="section">
+                <div class="section-header">
+                    <h2>📊 每日结算</h2>
+                </div>
+                
+                <!-- 日历打卡系统 -->
+                <div class="check-in-system">
+                    <h3>📅 打卡日历</h3>
+                    <div class="check-in-calendar" id="check-in-calendar">
+                        <!-- 日历将通过JavaScript生成 -->
+                    </div>
+                    <div class="check-in-streak">
+                        <span class="label">连续打卡天数：</span>
+                        <span id="streak-count">0</span>
+                        <div id="spark-effect" class="spark-effect" style="display: none;">
+                            ✨ 连续打卡3天！
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="settlement-info">
+                    <div class="settlement-item">
+                        <span class="label">今日完成任务数：</span>
+                        <span id="today-completed-tasks">0</span>
+                    </div>
+                    <div class="settlement-item">
+                        <span class="label">今日获得晶石：</span>
+                        <span id="today-crystals">0</span>
+                    </div>
+                    <div class="settlement-item">
+                        <span class="label">累计完成任务数：</span>
+                        <span id="total-completed-tasks">0</span>
+                    </div>
+                    <div class="settlement-item">
+                        <span class="label">累计获得晶石：</span>
+                        <span id="total-crystals">0</span>
+                    </div>
+                </div>
+                <button id="manual-settlement-btn" class="btn-secondary">手动结算</button>
+            </section>
+
+            <!-- AI助手部分 -->
+            <section id="ai-assistant" class="section">
+                <div class="section-header">
+                    <h2>🤖 AI助手</h2>
+                </div>
+                <div class="ai-assistant-content">
+                    <div class="ai-features">
+                        <button class="ai-feature-btn active" data-feature="reward-calculator">任务奖励计算器</button>
+                        <button class="ai-feature-btn" data-feature="prize-converter">奖品价值转换器</button>
+                    </div>
+                    
+                    <!-- 任务奖励计算器 -->
+                    <div id="reward-calculator" class="ai-feature-content">
+                        <h3>任务奖励计算器</h3>
+                        <p>根据任务的难易程度，推荐合适的晶石奖励</p>
+                        <form id="reward-calculator-form">
+                            <div class="form-group">
+                                <label>任务名称</label>
+                                <input type="text" id="task-name-input" required>
+                            </div>
+                            <div class="form-group">
+                                <label>任务难度</label>
+                                <select id="task-difficulty" required>
+                                    <option value="easy">简单</option>
+                                    <option value="medium">中等</option>
+                                    <option value="hard">困难</option>
+                                    <option value="very-hard">非常困难</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>任务类型</label>
+                                <select id="task-type-input" required>
+                                    <option value="daily">每日任务</option>
+                                    <option value="long-term">长期任务</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>任务描述</label>
+                                <textarea id="task-description-input"></textarea>
+                            </div>
+                            <button type="submit" class="btn-primary">计算推荐奖励</button>
+                        </form>
+                        <div id="reward-result" class="ai-result"></div>
+                    </div>
+                    
+                    <!-- 奖品价值转换器 -->
+                    <div id="prize-converter" class="ai-feature-content" style="display: none;">
+                        <h3>奖品价值转换器</h3>
+                        <p>根据奖品的实际价值，计算需要的晶石数量</p>
+                        <form id="prize-converter-form">
+                            <div class="form-group">
+                                <label>奖品名称</label>
+                                <input type="text" id="prize-name-input" required>
+                            </div>
+                            <div class="form-group">
+                                <label>奖品价值（人民币）</label>
+                                <input type="number" id="prize-value-input" min="1" step="1" required>
+                            </div>
+                            <div class="form-group">
+                                <label>奖品描述</label>
+                                <textarea id="prize-description-input"></textarea>
+                            </div>
+                            <button type="submit" class="btn-primary">计算所需晶石</button>
+                        </form>
+                        <div id="prize-result" class="ai-result"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 设置界面 -->
+            <section id="settings" class="section">
+                <div class="section-header">
+                    <h2>⚙️ 设置</h2>
+                </div>
+                <div class="settings-content">
+                    <!-- 性别选择 -->
+                    <div class="setting-item">
+                        <h3>👶 儿童性别</h3>
+                        <p>选择适合的界面风格</p>
+                        <div class="gender-selector">
+                            <button class="gender-btn" data-gender="boy">男孩版</button>
+                            <button class="gender-btn" data-gender="girl">女孩版</button>
+                        </div>
+                    </div>
+                    
+                    <!-- 背景音乐 -->
+                    <div class="setting-item">
+                        <h3>🎵 背景音乐</h3>
+                        <p>开启或关闭背景音乐</p>
+                        <div class="toggle-switch">
+                            <label class="switch">
+                                <input type="checkbox" id="music-toggle">
+                                <span class="slider round"></span>
+                            </label>
+                            <span id="music-status">关闭</span>
+                        </div>
+                    </div>
+                    
+                    <!-- 关于 -->
+                    <div class="setting-item">
+                        <h3>ℹ️ 关于</h3>
+                        <p>育儿小助手 v1.0</p>
+                        <p>帮助孩子养成良好习惯的智能工具</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- 添加任务弹窗 -->
+    <div id="add-task-modal" class="modal">
+        <div class="modal-content">
+            <h3>添加任务</h3>
+            <form id="add-task-form">
+                <div class="form-group">
+                    <label>任务名称</label>
+                    <input type="text" id="task-name" required>
+                </div>
+                <div class="form-group">
+                    <label>任务类型</label>
+                    <select id="task-type" required>
+                        <option value="daily">每日任务</option>
+                        <option value="long-term">长期任务</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>晶石奖励</label>
+                    <input type="number" id="task-reward" min="-100" max="100" value="10" required>
+                    <small>扣分任务请输入负数</small>
+                </div>
+                <div class="form-group">
+                    <label>任务描述</label>
+                    <textarea id="task-description"></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="button" id="cancel-task-btn" class="btn-secondary">取消</button>
+                    <button type="submit" class="btn-primary">添加</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 添加成就弹窗 -->
+    <div id="add-achievement-modal" class="modal">
+        <div class="modal-content">
+            <h3>添加成就</h3>
+            <form id="add-achievement-form">
+                <div class="form-group">
+                    <label>成就名称</label>
+                    <input type="text" id="achievement-name" required>
+                </div>
+                <div class="form-group">
+                    <label>晶石奖励</label>
+                    <input type="number" id="achievement-reward" min="1" max="1000" value="50" required>
+                </div>
+                <div class="form-group">
+                    <label>成就描述</label>
+                    <textarea id="achievement-description"></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="button" id="cancel-achievement-btn" class="btn-secondary">取消</button>
+                    <button type="submit" class="btn-primary">添加</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 添加奖品弹窗 -->
+    <div id="add-reward-modal" class="modal">
+        <div class="modal-content">
+            <h3>添加奖品</h3>
+            <form id="add-reward-form">
+                <div class="form-group">
+                    <label>奖品名称</label>
+                    <input type="text" id="reward-name" required>
+                </div>
+                <div class="form-group">
+                    <label>兑换所需晶石</label>
+                    <input type="number" id="reward-cost" min="1" max="1000" value="20" required>
+                </div>
+                <div class="form-group">
+                    <label>奖品描述</label>
+                    <textarea id="reward-description"></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="button" id="cancel-reward-btn" class="btn-secondary">取消</button>
+                    <button type="submit" class="btn-primary">添加</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 兑换确认弹窗 -->
+    <div id="exchange-modal" class="modal">
+        <div class="modal-content">
+            <h3>确认兑换</h3>
+            <p id="exchange-message">确定要兑换此奖品吗？</p>
+            <div class="form-actions">
+                <button type="button" id="cancel-exchange-btn" class="btn-secondary">取消</button>
+                <button type="button" id="confirm-exchange-btn" class="btn-primary">确认</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 提示弹窗 -->
+    <div id="toast" class="toast">
+        <span id="toast-message"></span>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // 注册Service Worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./service-worker.js')
+                    .then((registration) => {
+                        console.log('Service Worker 注册成功:', registration.scope);
+                    })
+                    .catch((error) => {
+                        console.log('Service Worker 注册失败:', error);
+                    });
+            });
+        }
+    </script>
+</body>
+</html>
